@@ -8,11 +8,12 @@ import { Scene } from "../scene";
 
 
 export class LoadScene extends Scene {
- 
+    readonly cbOnLoaded: Function;
 
     private loadingText : PIXI.Text;
-    constructor(layer : SceneLayer) {
+    constructor(layer : SceneLayer, callbackOnLoaded: Function) {
         super(layer);
+        this.cbOnLoaded = callbackOnLoaded;
         this.create();
     }
     protected create(): void {
@@ -35,8 +36,8 @@ export class LoadScene extends Scene {
     }
     
     private onLoadComplete() : void {
-             setTimeout(()=>
-        App.sceneController.loadScene(Settings.Scenes.MainMenuScene, SceneLayer.UI), 500);
+         setTimeout(()=>
+             this.cbOnLoaded(), 500);
     }
 
     public update(delta: number): void {

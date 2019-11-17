@@ -10,8 +10,8 @@ export class SceneController {
     private lastLoadedScene: Scene;
     private loadedScenes: Scene[] = [];
 
-    private uiLayer: PIXI.Container;
-    private gameLayer: PIXI.Container;
+    readonly uiLayer: PIXI.Container;
+    readonly gameLayer: PIXI.Container;
 
     constructor() {
         this.gameLayer = new Container();
@@ -22,11 +22,11 @@ export class SceneController {
         App.application.ticker.add(this.mainUpdate.bind(this))
     }
 
-    public loadScene(scene: any, layer: SceneLayer, additive: boolean = false): void {
+    public loadScene(scene: Scene, additive: boolean = false): void {
 
         if (!additive && this.lastLoadedScene) {
 
-            for (var i = this.loadedScenes.length - 1; i >= 0; i--) {
+            for (let i = this.loadedScenes.length - 1; i >= 0; i--) {
                 if (this.loadedScenes[i] === this.lastLoadedScene) {
                     this.loadedScenes.splice(i, 1);
                     break;
@@ -36,14 +36,14 @@ export class SceneController {
             this.lastLoadedScene.destroy();
             this.lastLoadedScene = undefined;
         }
-        this.lastLoadedScene = new scene(layer);
+        this.lastLoadedScene = scene;
         this.loadedScenes.push(this.lastLoadedScene);
         this.addSceneContainer();
     }
 
     public destroyCurrentScene() : void
     {
-        for (var i = this.loadedScenes.length - 1; i >= 0; i--) {
+        for (let i = this.loadedScenes.length - 1; i >= 0; i--) {
             if (this.loadedScenes[i] === this.lastLoadedScene) {
                 this.loadedScenes.splice(i, 1);
                 break;

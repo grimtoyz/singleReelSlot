@@ -1,14 +1,16 @@
 import { Settings, ScreenSize } from "./config/settings";
 import * as PIXI from 'pixi.js';
 import { SceneController, SceneLayer } from "./controllers/SceneController";
+import {GameController} from "./controllers/GameController";
 
 export class App extends PIXI.Application {
 
     private static instance: App;
     private static _sceneController: SceneController;
+    private static _gameController: GameController;
 
     constructor(width: number, height: number, resolution: number) {
-        var canvas = <HTMLCanvasElement> document.getElementById('canvas');
+        let canvas = <HTMLCanvasElement> document.getElementById('canvas');
         super( {
             view : canvas,
             antialias: false,
@@ -19,7 +21,6 @@ export class App extends PIXI.Application {
         });
 
         document.body.appendChild(this.view);
-
     }
 
     //Create singlenton instance
@@ -34,20 +35,31 @@ export class App extends PIXI.Application {
     }
 
     private init(): void {
-        App.sceneController.loadScene(Settings.Scenes.LoadScene, SceneLayer.UI);
+        App._gameController.init();
     }
+
     private static startControllers(): void {
         this._sceneController = new SceneController();
+        this._gameController = new GameController();
     }
+
     static get sceneController(): SceneController {
         return this._sceneController;
     }
+
+    static get gameController(): GameController {
+        return this._gameController;
+    }
+
     private addListeners(): void {
         window.addEventListener('resize', this.resize.bind(this));
         this.resize();
     }
    
     resize() {
-        //TODO: Implement responsive resize.
+        this.renderer.resize(window.innerWidth, window.innerHeight);
+
+        if (App.gameController)
+            App.gameController.resize(window.innerWidth, window.innerHeight);
     }
 }
