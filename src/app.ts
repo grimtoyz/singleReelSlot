@@ -7,12 +7,12 @@ export class App extends PIXI.Application {
 
     private static instance: App;
     private static _sceneController: SceneController;
-    private static _gameController: GameController;
 
     constructor(width: number, height: number, resolution: number) {
         let canvas = <HTMLCanvasElement> document.getElementById('canvas');
         super( {
             view : canvas,
+            autoResize: true,
             antialias: false,
             backgroundColor: Settings.BgColor,
             roundPixels: Settings.RoundPixels,
@@ -35,20 +35,15 @@ export class App extends PIXI.Application {
     }
 
     private init(): void {
-        App._gameController.init();
+        App.sceneController.loadScene(Settings.Scenes.LoadScene, SceneLayer.UI);
     }
 
     private static startControllers(): void {
         this._sceneController = new SceneController();
-        this._gameController = new GameController();
     }
 
     static get sceneController(): SceneController {
         return this._sceneController;
-    }
-
-    static get gameController(): GameController {
-        return this._gameController;
     }
 
     private addListeners(): void {
@@ -59,7 +54,7 @@ export class App extends PIXI.Application {
     resize() {
         this.renderer.resize(window.innerWidth, window.innerHeight);
 
-        if (App.gameController)
-            App.gameController.resize(window.innerWidth, window.innerHeight);
+        if (App._sceneController)
+            App._sceneController.resize();
     }
 }

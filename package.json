@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "author": "André Lacerda",
     "dependencies": {
+        "@pixi/math": "^5.2.0",
         "pixi.js": "^4.8.5"
     },
     "devDependencies": {

@@ -22,7 +22,7 @@ export class SceneController {
         App.application.ticker.add(this.mainUpdate.bind(this))
     }
 
-    public loadScene(scene: Scene, additive: boolean = false): void {
+    public loadScene(scene: any, layer: SceneLayer, additive: boolean = false): void {
 
         if (!additive && this.lastLoadedScene) {
 
@@ -36,7 +36,7 @@ export class SceneController {
             this.lastLoadedScene.destroy();
             this.lastLoadedScene = undefined;
         }
-        this.lastLoadedScene = scene;
+        this.lastLoadedScene = new scene(layer);
         this.loadedScenes.push(this.lastLoadedScene);
         this.addSceneContainer();
     }
@@ -78,6 +78,12 @@ export class SceneController {
     private mainUpdate(delta): void {
         this.loadedScenes.forEach(scene => {
             scene.update(delta);
+        });
+    }
+
+    resize(): void{
+        this.loadedScenes.forEach(scene => {
+            scene.resize();
         });
     }
 }
