@@ -29,7 +29,7 @@ export class ReelComponent extends PIXI.Container{
         this.createMaskedWrapper();
         this.createSymbols();
 
-        this.updateSymbols([7, 0, 1, 2, 3], 0);
+        // this.updateSymbols([7, 0, 1, 2, 3], 0);
     }
 
     private createBackground(): void{
@@ -108,10 +108,6 @@ export class ReelComponent extends PIXI.Container{
 
     public playStopSpinAnimation(){
 
-    }
-
-    public update(delta: number){
-        // if ()
     }
 
     get symbolSize():math.Point{

@@ -3,7 +3,6 @@ import {SpinButton} from "../components/ui/spinButton";
 import {Settings} from "../config/settings";
 
 export class HUD extends PIXI.Container{
-    private _cbOnSpinTouched: Function;
     private _spinButton: SpinButton;
 
     constructor(){
@@ -23,7 +22,7 @@ export class HUD extends PIXI.Container{
     }
 
     addOnSpinTouchedCallback(cb: Function){
-        this._cbOnSpinTouched = cb;
+        this._spinButton.addOnTouchCallback(cb);
     }
 
     public update(delta: number): void {

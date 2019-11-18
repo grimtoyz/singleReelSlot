@@ -1,11 +1,11 @@
 import { Settings, ScreenSize } from "./config/settings";
 import * as PIXI from 'pixi.js';
-import {GameController} from "./controllers/GameController";
+import {SlotController} from "./controllers/SlotController";
 
 export class App extends PIXI.Application {
 
     private static instance: App;
-    private static gameController: GameController;
+    private static gameController: SlotController;
 
     constructor(width: number, height: number, resolution: number) {
         let canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -33,7 +33,7 @@ export class App extends PIXI.Application {
     }
 
     private static startControllers(): void {
-        this.gameController = new GameController();
+        this.gameController = new SlotController();
     }
 
     private addListeners(): void {

@@ -2,6 +2,7 @@ import {ReelComponent} from "../components/slot/reelComponent";
 import {Settings} from "../config/settings";
 import * as math from '@pixi/math';
 import * as TWEEN from 'tween.js/src/Tween.js';
+import {App} from "../app";
 
 
 export class ReelSpinner {
@@ -9,30 +10,34 @@ export class ReelSpinner {
     readonly _reelMap: Array<number>;
     readonly _symbolsAmount: number;
 
-    private _currentPosition: Object;
     private _currentTopSymbolIndex: number;
     private _isLoopSpinning: boolean;
-    private _timeToLoopSpin: number;
-    private _spinLoopTime: number;
+    private _loopSpinDuration: number;
+    private _spinLoopTimeLeft: number;
     private _symbolToStopAtIndex: number;
+    private _spinLoopSpeed: number;
+
+    private _hasSymbolToStopAt: boolean;
 
     constructor(reel: ReelComponent){
         this._reel = reel;
-
         this._symbolsAmount = reel.symbolsAmount;
-
         this._reelMap = Settings.ReelMap.concat();
-        this._currentPosition = { y: 0 };
+
+        this.init();
+    }
+
+    private init(): void{
         this._currentTopSymbolIndex = 0;
-        this.create();
+
+        this._loopSpinDuration = 2000;
+        this._spinLoopSpeed = 0.2;
+
+        this.updateReel();
     }
 
-    protected create(): void{
-        this.spin(7);
-    }
-
-    public spin(symbolToStopAtIndex): void{
-        this._symbolToStopAtIndex = symbolToStopAtIndex;
+    public startSpin(): void{
+        this._hasSymbolToStopAt = false;
 
         let tween = new TWEEN.Tween(this)
             .to({ _currentTopSymbolIndex: "-16" }, 2000)
@@ -43,6 +48,27 @@ export class ReelSpinner {
             })
             .onComplete(()=>{
                 this.animateLoopSpin();
+            })
+            .start()
+    }
+
+    public stopSpin(): void{
+        let targetSymbolIndex = this._symbolToStopAtIndex;
+
+        console.log('!!!!!!  symbol index to stop at = ', targetSymbolIndex);
+
+        let rollbackSymbolIndex = this.calculateNormalizedIndex(this._symbolToStopAtIndex + 6);
+        this._currentTopSymbolIndex = rollbackSymbolIndex;
+        this.updateReel();
+
+        let tween = new TWEEN.Tween(this)
+            .to({ _currentTopSymbolIndex: "-6" }, 2000)
+            .easing(TWEEN.Easing.Back.Out)
+            .onUpdate(() => {
+                this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
+                this.updateReel();
+            })
+            .onComplete(()=>{
             })
             .start()
     }
@@ -62,19 +88,8 @@ export class ReelSpinner {
     }
 
     private animateLoopSpin(): void{
-        // let tween = new TWEEN.Tween(this)
-        //     .to({ _currentTopSymbolIndex: "-10" }, 1000)
-        //     .easing(TWEEN.Easing.Linear.None)
-        //     .onUpdate(() => {
-        //         this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
-        //         this.updateReel();
-        //     })
-        //     .onComplete(()=>{
-        //         // this.animateLoopSpin();
-        //     })
-        //     .start()
+        this._spinLoopTimeLeft = this._loopSpinDuration;
         this._isLoopSpinning = true;
-        this._timeToLoopSpin = 3000;
     }
 
     private updateReel(): void{
@@ -90,7 +105,30 @@ export class ReelSpinner {
         this._reel.updateSymbols(symbolIDs, -offset);
     }
 
-    public update(delta): void{
+    public setSymbolToStop(symbolIndex){
+        this._symbolToStopAtIndex = symbolIndex;
+        this._hasSymbolToStopAt = true;
+    }
 
+    public update(delta): void{
+        if (!this._isLoopSpinning)
+            return;
+
+        let currentIndex = this._currentTopSymbolIndex - this._spinLoopSpeed;
+        this._currentTopSymbolIndex = this.calculateNormalizedIndex(currentIndex);
+        this.updateReel();
+
+        if (this._spinLoopTimeLeft > 0)
+            this._spinLoopTimeLeft -= App.application.ticker.elapsedMS;
+        else{
+            this._spinLoopTimeLeft = 0;
+
+            // there was response from server with the symbol needed
+            // or else keep spinning infinitely or till certain idle timeout passed
+            if (this._hasSymbolToStopAt){
+                this._isLoopSpinning = false;
+                this.stopSpin();
+            }
+        }
     }
 }
