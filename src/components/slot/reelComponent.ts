@@ -28,8 +28,6 @@ export class ReelComponent extends PIXI.Container{
         this.createBackground();
         this.createMaskedWrapper();
         this.createSymbols();
-
-        // this.updateSymbols([7, 0, 1, 2, 3], 0);
     }
 
     private createBackground(): void{
@@ -83,31 +81,9 @@ export class ReelComponent extends PIXI.Container{
             let index = indexes[i];
             let symbol: PIXI.Sprite = this._symbols[i];
             symbol.texture = loadedFiles[atlasesRes.assets].textures[`sym${index}.png`];
-            console.log(`sym${index}.png`);
         }
 
         this._maskedWrapper.position.y = offsetY * this.symbolSize.y;
-
-        // const tween = new TWEEN.Tween(this._maskedWrapper.position) // Create a new tween that modifies 'coords'.
-        //     .to({ y: `${this._symbolSize.y * 2}` }, 2000) // Move to (300, 200) in 1 second.
-        //     .easing(TWEEN.Easing.Back.In) // Use an easing function to make the animation smooth.
-        //     .onUpdate(() => { // Called after tween.js updates 'coords'.
-        //         // Move 'box' to the position described by 'coords' with a CSS translation.
-        //         // box.style.setProperty('transform', `translate(${coords.x}px, ${coords.y}px)`);
-        //     })
-        //     .start(); // Start the tween immediately.
-    }
-
-    public playStartSpinAnimation(){
-
-    }
-
-    public playLoopSpinAnimation(){
-
-    }
-
-    public playStopSpinAnimation(){
-
     }
 
     get symbolSize():math.Point{

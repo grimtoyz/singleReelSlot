@@ -1,6 +1,7 @@
 import { Settings, ScreenSize } from "./config/settings";
 import * as PIXI from 'pixi.js';
 import {SlotController} from "./controllers/SlotController";
+import * as math from '@pixi/math';
 
 export class App extends PIXI.Application {
 
@@ -12,6 +13,7 @@ export class App extends PIXI.Application {
         super( {
             view : canvas,
             autoResize: true,
+            resolution: devicePixelRatio,
             antialias: false,
             backgroundColor: Settings.BgColor,
             roundPixels: Settings.RoundPixels,
@@ -25,7 +27,15 @@ export class App extends PIXI.Application {
     //Create singlenton instance
     public static get application(): App {
         if (!this.instance) {
-            this.instance = new App(window.innerWidth, window.innerHeight, window.devicePixelRatio);
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+
+            if (!width || !height) {
+                width = document.documentElement.clientWidth;
+                height = document.documentElement.clientHeight
+            }
+
+            this.instance = new App(width, height, window.devicePixelRatio);
             this.startControllers();
             this.instance.addListeners();
         }

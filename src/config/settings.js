@@ -16,5 +16,5 @@ var Settings = /** @class */ (function () {
     return Settings;
 }());
 exports.Settings = Settings;
-exports.ScreenSize = { width: 1280, height: 720 };
+exports.ScreenSize = { width: 960, height: 960 };
 //# sourceMappingURL=settings.js.map

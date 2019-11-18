@@ -13,8 +13,17 @@ export class GameView extends PIXI.Container{
     }
 
     protected create(): void {
+        this.createBackground();
         this.createReel();
         this.resize();
+    }
+
+    createBackground(): void{
+        let background = new PIXI.Graphics();
+        background.beginFill(0x3e403d);
+        background.drawRect(-480, -480, 960, 960);
+        background.endFill();
+        this.addChild(background);
     }
 
     private createReel(): void{
@@ -39,7 +48,7 @@ export class GameView extends PIXI.Container{
     }
 
     public resize(): void{
-        this.position.set(App.application.view.width * 0.5, App.application.view.height * 0.5);
+        this.position.set(App.application.screen.width * 0.5, App.application.screen.height * 0.5);
     };
 
     public get reel(): ReelComponent{

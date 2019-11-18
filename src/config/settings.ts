@@ -15,4 +15,4 @@ export class Settings
     static SpinButtonPosition: MATH.Point = new MATH.Point(250, 300);
 }
 
-export const ScreenSize =  { width: 1280, height: 720 };
+export const ScreenSize =  { width: 960, height: 960 };

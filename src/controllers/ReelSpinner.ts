@@ -55,8 +55,6 @@ export class ReelSpinner {
     public stopSpin(): void{
         let targetSymbolIndex = this._symbolToStopAtIndex;
 
-        console.log('!!!!!!  symbol index to stop at = ', targetSymbolIndex);
-
         let rollbackSymbolIndex = this.calculateNormalizedIndex(this._symbolToStopAtIndex + 6);
         this._currentTopSymbolIndex = rollbackSymbolIndex;
         this.updateReel();
@@ -82,6 +80,7 @@ export class ReelSpinner {
         if (normalizedIndex < 0)
             normalizedIndex = this._reelMap.length + normalizedIndex;
 
+        // DEBUG
         // console.log(`normalized ${index} to ${normalizedIndex}`);
 
         return normalizedIndex;

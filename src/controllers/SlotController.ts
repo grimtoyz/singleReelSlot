@@ -40,6 +40,7 @@ export class SlotController {
 
         this.createGameView();
         this.createHUD();
+        this.resize();
     }
 
     private createGameView(): void{
@@ -101,13 +102,30 @@ export class SlotController {
             this._hudView.update(delta);
     }
 
-    resize(): void{
-        if (this._gameView){
-            this._gameView.resize();
-        }
+    public resize(): void{
+        if (!this._gameView)
+            return;
 
-        if (this._hudView){
+        let ratio = App.application.screen.width < App.application.screen.height ? App.application.screen.width / 960 : App.application.screen.height / 960;
+        // TODO: to avoid separate scaling all views should be added to a single scalable and resizable wrapper
+        this._gameView.scale.x = this._gameView.scale.y = ratio;
+        this._hudView.scale.x = this._hudView.scale.y = ratio;
+
+        if (App.application.screen.width < App.application.screen.height)
+            this.applyLayoutPortrait();
+        else
+            this.applyLayoutLandscape();
+
+        if (this._gameView)
+            this._gameView.resize();
+
+        if (this._hudView)
             this._hudView.resize();
-        }
+    }
+
+    private applyLayoutPortrait(): void{
+    }
+
+    private applyLayoutLandscape(): void{
     }
 }
