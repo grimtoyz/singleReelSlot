@@ -3,7 +3,8 @@ import {atlasesRes, imagesRes, loadedFiles} from "../../config/resources";
 import {ScreenSize} from "../../config/settings";
 
 export class SpinButton extends PIXI.Container{
-    private button: PIXI.Sprite;
+    private _button: PIXI.Sprite;
+    private _buttonText: PIXI.Text;
 
     constructor() {
         super();
@@ -12,17 +13,18 @@ export class SpinButton extends PIXI.Container{
 
     protected create(): void {
         this.createButton();
-
-        // this.title.anchor.set(0.5);
-        // this.title.x = ScreenSize.width / 2;
-        // this.title.y = ScreenSize.height / 2;
-        //
-        // this.sceneContainer.addChild(this.title);
+        this.createButtonText();
     }
 
     createButton(){
-        // let texture = PIXI.loader.resources["atlas"].textures["spinButton.png"];
-        this.button = new PIXI.Sprite(loadedFiles[atlasesRes.assets].textures['spinButton.png']);
-        this.addChild(this.button);
+        this._button = new PIXI.Sprite(loadedFiles[atlasesRes.assets].textures['spinButton.png']);
+        this._button.anchor.set(0.5);
+        this.addChild(this._button);
+    }
+
+    createButtonText(){
+        this._buttonText = new PIXI.Text('SPIN', {fontSize:40});
+        this._buttonText.anchor.set(0.5);
+        this.addChild(this._buttonText);
     }
 }

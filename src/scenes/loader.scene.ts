@@ -38,7 +38,7 @@ export class LoadScene extends Scene {
     private onLoadComplete() : void {
         setTimeout(()=>{
             App.sceneController.loadScene(Settings.Scenes.SlotMachineScene, SceneLayer.GAME);
-            App.sceneController.loadScene(Settings.Scenes.SlotHUD, SceneLayer.UI, true);
+            // App.sceneController.loadScene(Settings.Scenes.SlotHUD, SceneLayer.UI, true);
         }, 500);
     }
 

@@ -1,6 +1,6 @@
 import { App } from "../app";
 import {Settings} from "../config/settings";
-import {SceneLayer} from "./SceneController";
+import {SceneController, SceneLayer} from "./SceneController";
 import {ReelSpinner} from "./ReelSpinner";
 import {ReelComponent} from "../components/slot/reelComponent";
 import {Scene} from "../scene";
@@ -11,6 +11,11 @@ export class GameController {
 
     constructor (){
         // this.create();
+        const ui = SceneLayer.UI;
+        console.log("==>> ui: ", ui);
+
+        const uiLayer = App.sceneController.uiLayer;
+        console.log("==>> layer: ", uiLayer)
     }
 
     create(){

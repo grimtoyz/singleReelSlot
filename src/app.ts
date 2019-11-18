@@ -40,6 +40,7 @@ export class App extends PIXI.Application {
 
     private static startControllers(): void {
         this._sceneController = new SceneController();
+        const gc:GameController = new GameController();
     }
 
     static get sceneController(): SceneController {

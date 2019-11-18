@@ -1,6 +1,7 @@
 import { Container } from "pixi.js";
 import { App } from "../app";
 import { Scene } from "../scene";
+import * as TWEEN from 'tween.js/src/Tween.js';
 
 
 export enum SceneLayer { UI, GAME };
@@ -76,6 +77,8 @@ export class SceneController {
     }
 
     private mainUpdate(delta): void {
+        TWEEN.update();
+
         this.loadedScenes.forEach(scene => {
             scene.update(delta);
         });

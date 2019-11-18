@@ -8,6 +8,7 @@ module.exports = {
         path: path.resolve(__dirname, ''),
         filename: './build/bundle.js',
     },
+    devtool: "inline-source-map",
     resolve: {
         extensions: ['.ts', '.js'],
         modules: [path.resolve(path.join(__dirname, 'node_modules'))]
