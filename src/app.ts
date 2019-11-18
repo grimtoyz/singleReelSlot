@@ -1,12 +1,11 @@
 import { Settings, ScreenSize } from "./config/settings";
 import * as PIXI from 'pixi.js';
-import { SceneController, SceneLayer } from "./controllers/SceneController";
 import {GameController} from "./controllers/GameController";
 
 export class App extends PIXI.Application {
 
     private static instance: App;
-    private static _sceneController: SceneController;
+    private static gameController: GameController;
 
     constructor(width: number, height: number, resolution: number) {
         let canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -34,22 +33,17 @@ export class App extends PIXI.Application {
     }
 
     private static startControllers(): void {
-        const gameController:GameController = new GameController();
-    }
-
-    static get sceneController(): SceneController {
-        return this._sceneController;
+        this.gameController = new GameController();
     }
 
     private addListeners(): void {
         window.addEventListener('resize', this.resize.bind(this));
         this.resize();
     }
-   
     resize() {
         this.renderer.resize(window.innerWidth, window.innerHeight);
 
-        if (App._sceneController)
-            App._sceneController.resize();
+        if (App.gameController)
+            App.gameController.resize();
     }
 }

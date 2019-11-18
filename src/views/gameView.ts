@@ -1,4 +1,3 @@
-import {SceneLayer} from "../controllers/SceneController";
 import {SpinButton} from "../components/ui/spinButton";
 import {ReelComponent} from "../components/slot/reelComponent";
 import {App} from "../app";

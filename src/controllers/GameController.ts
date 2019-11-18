@@ -1,16 +1,13 @@
 import { App } from "../app";
 import {Settings} from "../config/settings";
-import {SceneController, SceneLayer} from "./SceneController";
 import {ReelSpinner} from "./ReelSpinner";
 import {ReelComponent} from "../components/slot/reelComponent";
-import {Scene} from "../scene";
 import {GameView} from "../views/gameView";
 import {HUD} from "../views/hudView";
 import {LoadingView} from "../views/loadingView";
 
 export class GameController {
     private _reelSpinner: ReelSpinner;
-    private _gameplayScene: Scene;
 
     private _loadingView: LoadingView;
     private _gameView: GameView;
@@ -21,6 +18,7 @@ export class GameController {
     }
 
     create(){
+        App.application.ticker.add(this.mainUpdate.bind(this));
         this.createLoadingView();
     }
 
@@ -49,8 +47,12 @@ export class GameController {
         App.application.stage.addChild(this._hudView);
     }
 
-    update(delta: number): void{
+    mainUpdate(delta: number): void{
+        if (this._gameView)
+            this._gameView.update(delta);
 
+        if (this._hudView)
+            this._hudView.update(delta);
     }
 
     resize(): void{
