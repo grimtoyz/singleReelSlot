@@ -33,6 +33,7 @@ export class SlotController {
             this.onResourcesLoaded();
         });
         App.application.stage.addChild(this._loadingView);
+        this.resize();
     }
 
     private onResourcesLoaded(): void{
@@ -124,28 +125,31 @@ export class SlotController {
     }
 
     public resize(): void{
-        if (!this._gameView)
-            return;
-
         let ratio = App.application.screen.width < App.application.screen.height ? App.application.screen.width / 960 : App.application.screen.height / 960;
         // TODO: to avoid separate scaling all views should be added to a single scalable and resizable wrapper
-        this._gameView.scale.x = this._gameView.scale.y = ratio;
-        this._hudView.scale.x = this._hudView.scale.y = ratio;
-        this._celebrationComponent.scale.x = this._celebrationComponent.scale.y = ratio;
 
         if (App.application.screen.width < App.application.screen.height)
             this.applyLayoutPortrait();
         else
             this.applyLayoutLandscape();
 
-        if (this._gameView)
+        if (this._loadingView)
+            this._loadingView.resize();
+
+        if (this._gameView){
+            this._gameView.scale.x = this._gameView.scale.y = ratio;
             this._gameView.resize();
+        }
 
-        if (this._hudView)
+        if (this._hudView){
+            this._hudView.scale.x = this._hudView.scale.y = ratio;
             this._hudView.resize();
+        }
 
-        if (this._celebrationComponent)
+        if (this._celebrationComponent){
             this._celebrationComponent.resize();
+            this._celebrationComponent.scale.x = this._celebrationComponent.scale.y = ratio;
+        }
     }
 
     private applyLayoutPortrait(): void{

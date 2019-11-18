@@ -39,6 +39,6 @@ export class HUD extends PIXI.Container{
     }
 
     public resize(): void{
-        this.position.set(App.application.view.width * 0.5, App.application.view.height * 0.5);
+        this.position.set(App.application.screen.width * 0.5, App.application.screen.height * 0.5);
     };
 }
