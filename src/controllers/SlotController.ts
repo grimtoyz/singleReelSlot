@@ -128,11 +128,6 @@ export class SlotController {
         let ratio = App.application.screen.width < App.application.screen.height ? App.application.screen.width / 960 : App.application.screen.height / 960;
         // TODO: to avoid separate scaling all views should be added to a single scalable and resizable wrapper
 
-        if (App.application.screen.width < App.application.screen.height)
-            this.applyLayoutPortrait();
-        else
-            this.applyLayoutLandscape();
-
         if (this._loadingView)
             this._loadingView.resize();
 
@@ -150,11 +145,5 @@ export class SlotController {
             this._celebrationComponent.resize();
             this._celebrationComponent.scale.x = this._celebrationComponent.scale.y = ratio;
         }
-    }
-
-    private applyLayoutPortrait(): void{
-    }
-
-    private applyLayoutLandscape(): void{
     }
 }
