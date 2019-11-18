@@ -22,7 +22,8 @@ export class LoadingView extends PIXI.Container {
 
         const loadingStyle = new PIXI.TextStyle({
             fill: "#24f818",
-            fontSize: 50
+            fontSize: 50,
+            align : 'center'
         });
 
         this.loadingText = new PIXI.Text('Please Wait.', loadingStyle);
@@ -43,7 +44,7 @@ export class LoadingView extends PIXI.Container {
     }
 
     public resize(): void{
-        // this.position.set(App.application.view.width * 0.5, App.application.view.height * 0.5);
+        this.position.set(App.application.screen.width * 0.5, App.application.screen.height * 0.5);
     };
 
     destroy(){

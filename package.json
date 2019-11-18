@@ -5,6 +5,8 @@
     "dependencies": {
         "@pixi/math": "^5.2.0",
         "base64-inline-loader": "^1.1.1",
+        "pixi-dust": "^4.5.3",
+        "pixi-particles": "^4.2.0",
         "pixi.js": "^4.8.5",
         "tween.js": "^16.6.0",
         "tweenjs": "^1.0.2"

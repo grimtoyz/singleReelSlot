@@ -1,5 +1,13 @@
 {"frames": {
 
+"particle.png":
+{
+	"frame": {"x":1297,"y":123,"w":21,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":21},
+	"sourceSize": {"w":21,"h":21}
+},
 "spinButton.png":
 {
 	"frame": {"x":1297,"y":1,"w":120,"h":120},
@@ -82,6 +90,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1418,"h":242},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:999750733c9d02dd19b5fc09238a2e58:7b87ba2fe382233c22cd2da597d3dcd9:a759b6bbc8381ac9c472b28f589ad0d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:ef93ec124f0c8e5618719b4cd7b8c1c8:6e8563727785b6df864a28f258667a53:a759b6bbc8381ac9c472b28f589ad0d6$"
 }
 }

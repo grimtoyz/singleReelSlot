@@ -6,12 +6,14 @@ import {GameView} from "../views/gameView";
 import {HUD} from "../views/hudView";
 import {LoadingView} from "../views/loadingView";
 import * as TWEEN from 'tween.js/src/Tween.js';
+import {CelebrationComponent} from "../components/celebrationComponent";
 
 
 export class SlotController {
     private _loadingView: LoadingView;
     private _gameView: GameView;
     private _hudView: HUD;
+    private _celebrationComponent: CelebrationComponent;
     private _isSpinningInProcess: boolean;
     private _reelController: ReelSpinner;
 
@@ -44,6 +46,7 @@ export class SlotController {
         });
 
         this.createHUD();
+        this.createCelebrationLayer();
         this.resize();
     }
 
@@ -58,6 +61,11 @@ export class SlotController {
             this.onSpinAttempt();
         });
         App.application.stage.addChild(this._hudView);
+    }
+
+    private createCelebrationLayer(): void{
+        this._celebrationComponent = new CelebrationComponent();
+        App.application.stage.addChild(this._celebrationComponent);
     }
 
     private onSpinAttempt(): void{
@@ -85,6 +93,7 @@ export class SlotController {
 
     private onSpinComplete(): void{
         this._hudView.enableSpinButton();
+        this._celebrationComponent.burst();
         this._isSpinningInProcess = false;
     }
 
@@ -109,6 +118,9 @@ export class SlotController {
 
         if (this._hudView)
             this._hudView.update(delta);
+
+        if (this._celebrationComponent)
+            this._celebrationComponent.update(delta);
     }
 
     public resize(): void{
@@ -119,6 +131,7 @@ export class SlotController {
         // TODO: to avoid separate scaling all views should be added to a single scalable and resizable wrapper
         this._gameView.scale.x = this._gameView.scale.y = ratio;
         this._hudView.scale.x = this._hudView.scale.y = ratio;
+        this._celebrationComponent.scale.x = this._celebrationComponent.scale.y = ratio;
 
         if (App.application.screen.width < App.application.screen.height)
             this.applyLayoutPortrait();
@@ -130,6 +143,9 @@ export class SlotController {
 
         if (this._hudView)
             this._hudView.resize();
+
+        if (this._celebrationComponent)
+            this._celebrationComponent.resize();
     }
 
     private applyLayoutPortrait(): void{
