@@ -21,6 +21,16 @@ export class HUD extends PIXI.Container{
         this.addChild(this._spinButton);
     }
 
+    public enableSpinButton(): void{
+        this._spinButton.interactive = true;
+        this._spinButton.alpha = 1;
+    }
+
+    public disableSpinButton(): void{
+        this._spinButton.interactive = false;
+        this._spinButton.alpha = 0.4;
+    }
+
     addOnSpinTouchedCallback(cb: Function){
         this._spinButton.addOnTouchCallback(cb);
     }

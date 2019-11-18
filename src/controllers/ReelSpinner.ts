@@ -19,10 +19,13 @@ export class ReelSpinner {
 
     private _hasSymbolToStopAt: boolean;
 
-    constructor(reel: ReelComponent){
+    readonly cbOnSpinComplete: Function;
+
+    constructor(reel: ReelComponent, cbOnSpinComplete: Function){
         this._reel = reel;
         this._symbolsAmount = reel.symbolsAmount;
         this._reelMap = Settings.ReelMap.concat();
+        this.cbOnSpinComplete = cbOnSpinComplete;
 
         this.init();
     }
@@ -67,6 +70,7 @@ export class ReelSpinner {
                 this.updateReel();
             })
             .onComplete(()=>{
+                this.onSpinComplete();
             })
             .start()
     }
@@ -102,6 +106,10 @@ export class ReelSpinner {
 
         let offset: number = this._currentTopSymbolIndex - Math.floor(this._currentTopSymbolIndex);
         this._reel.updateSymbols(symbolIDs, -offset);
+    }
+
+    private onSpinComplete(){
+        this.cbOnSpinComplete();
     }
 
     public setSymbolToStop(symbolIndex){

@@ -9,12 +9,11 @@ import * as TWEEN from 'tween.js/src/Tween.js';
 
 
 export class SlotController {
-    private _reelSpinner: ReelSpinner;
-
     private _loadingView: LoadingView;
     private _gameView: GameView;
     private _hudView: HUD;
     private _isSpinningInProcess: boolean;
+    private _reelController: ReelSpinner;
 
     constructor (){
         this.create();
@@ -39,6 +38,11 @@ export class SlotController {
         App.application.stage.removeChild(this._loadingView);
 
         this.createGameView();
+        let reel = this._gameView.reel;
+        this._reelController = new ReelSpinner(reel, ()=>{
+            this.onSpinComplete();
+        });
+
         this.createHUD();
         this.resize();
     }
@@ -57,7 +61,7 @@ export class SlotController {
     }
 
     private onSpinAttempt(): void{
-        if (this.isSpinPossible()){
+        if (this.isSpinPossible() && !this._isSpinningInProcess){
             this._isSpinningInProcess = true;
             this.spinOneRound();
             this.makeSpinRequest();
@@ -76,15 +80,17 @@ export class SlotController {
         let reelMap = Settings.ReelMap;
         let responseSymbolIndex = reelMap[Math.floor(Math.random() * reelMap.length)];
 
-        this._gameView.setSymbolToStopAt(responseSymbolIndex);
+        this._reelController.setSymbolToStop(responseSymbolIndex);
     }
 
-    onRoundOver(){
+    private onSpinComplete(): void{
+        this._hudView.enableSpinButton();
         this._isSpinningInProcess = false;
     }
 
     spinOneRound(){
-        this._gameView.spin();
+        this._reelController.startSpin();
+        this._hudView.disableSpinButton();
     }
 
     isSpinPossible(): boolean{
@@ -94,6 +100,9 @@ export class SlotController {
 
     mainUpdate(delta: number): void{
         TWEEN.update();
+
+        if (this._reelController)
+            this._reelController.update(delta);
 
         if (this._gameView)
             this._gameView.update(delta);
