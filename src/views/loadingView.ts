@@ -42,9 +42,6 @@ export class LoadingView extends PIXI.Container {
         }, 500);
     }
 
-    public update(delta: number): void {
-    }
-
     public resize(): void{
         this.position.set(App.application.view.width * 0.5, App.application.view.height * 0.5);
     };
