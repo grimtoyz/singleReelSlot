@@ -4,50 +4,62 @@ import {SceneController, SceneLayer} from "./SceneController";
 import {ReelSpinner} from "./ReelSpinner";
 import {ReelComponent} from "../components/slot/reelComponent";
 import {Scene} from "../scene";
+import {GameView} from "../views/gameView";
+import {HUD} from "../views/hudView";
+import {LoadingView} from "../views/loadingView";
 
 export class GameController {
     private _reelSpinner: ReelSpinner;
     private _gameplayScene: Scene;
 
-    constructor (){
-        // this.create();
-        const ui = SceneLayer.UI;
-        console.log("==>> ui: ", ui);
+    private _loadingView: LoadingView;
+    private _gameView: GameView;
+    private _hudView: HUD;
 
-        const uiLayer = App.sceneController.uiLayer;
-        console.log("==>> layer: ", uiLayer)
+    constructor (){
+        this.create();
     }
 
     create(){
+        this.createLoadingView();
+    }
+
+    createLoadingView(){
+        this._loadingView = new LoadingView(()=>{
+            this.onResourcesLoaded();
+        });
+        App.application.stage.addChild(this._loadingView);
+    }
+
+    onResourcesLoaded(){
+        this._loadingView.destroy();
+        App.application.stage.removeChild(this._loadingView);
+
+        this.createGameView();
+        this.createHUD();
+    }
+
+    createGameView(){
+        this._gameView = new GameView();
+        App.application.stage.addChild(this._gameView);
+    }
+
+    createHUD(){
+        this._hudView = new HUD();
+        App.application.stage.addChild(this._hudView);
+    }
+
+    update(delta: number): void{
 
     }
 
-    // init(){
-    //     let loadingScene = new Settings.Scenes.LoadScene(SceneLayer.UI, ()=>{
-    //         this.onLoaded();
-    //     });
-    //     App.sceneController.loadScene(loadingScene);
-    // }
+    resize(): void{
+        if (this._gameView){
+            this._gameView.resize();
+        }
 
-    // onLoaded(){
-    //
-    //
-    //     this._gameplayScene = new Settings.Scenes.SlotScene(SceneLayer.GAME);
-    //     this._reelSpinner = new ReelSpinner(this._gameplayScene.reel);
-    //     App.sceneController.loadScene(this.gameplayScene);
-    // }
-
-    createReel(){
-
+        if (this._hudView){
+            this._hudView.resize();
+        }
     }
-
-    resize(){
-        // if (this.gameplayScene){
-        //     this.gameplayScene.resize();
-        // }
-    }
-
-    // public get gameplayScene(): Scene{
-    //     return this._gameplayScene;
-    // }
 }

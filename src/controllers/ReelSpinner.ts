@@ -11,6 +11,10 @@ export class ReelSpinner {
 
     private _currentPosition: Object;
     private _currentTopSymbolIndex: number;
+    private _isLoopSpinning: boolean;
+    private _timeToLoopSpin: number;
+    private _spinLoopTime: number;
+    private _symbolToStopAtIndex: number;
 
     constructor(reel: ReelComponent){
         this._reel = reel;
@@ -23,11 +27,13 @@ export class ReelSpinner {
         this.create();
     }
 
-    create(){
-        this.spin();
+    protected create(): void{
+        this.spin(7);
     }
 
-    spin(){
+    public spin(symbolToStopAtIndex): void{
+        this._symbolToStopAtIndex = symbolToStopAtIndex;
+
         let tween = new TWEEN.Tween(this)
             .to({ _currentTopSymbolIndex: "-16" }, 2000)
             .easing(TWEEN.Easing.Exponential.In)
@@ -55,21 +61,23 @@ export class ReelSpinner {
         return normalizedIndex;
     }
 
-    animateLoopSpin(): void{
-        let tween = new TWEEN.Tween(this)
-            .to({ _currentTopSymbolIndex: "-10" }, 1000)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(() => {
-                this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
-                this.updateReel();
-            })
-            .onComplete(()=>{
-                // this.animateLoopSpin();
-            })
-            .start()
+    private animateLoopSpin(): void{
+        // let tween = new TWEEN.Tween(this)
+        //     .to({ _currentTopSymbolIndex: "-10" }, 1000)
+        //     .easing(TWEEN.Easing.Linear.None)
+        //     .onUpdate(() => {
+        //         this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
+        //         this.updateReel();
+        //     })
+        //     .onComplete(()=>{
+        //         // this.animateLoopSpin();
+        //     })
+        //     .start()
+        this._isLoopSpinning = true;
+        this._timeToLoopSpin = 3000;
     }
 
-    updateReel(): void{
+    private updateReel(): void{
         let symbolIDs: Array<number> = [];
         for (let i = 0; i < this._symbolsAmount; i++) {
             let symIndex: number = Math.floor(this._currentTopSymbolIndex) + i;
@@ -80,5 +88,9 @@ export class ReelSpinner {
 
         let offset: number = this._currentTopSymbolIndex - Math.floor(this._currentTopSymbolIndex);
         this._reel.updateSymbols(symbolIDs, -offset);
+    }
+
+    public update(delta): void{
+
     }
 }
