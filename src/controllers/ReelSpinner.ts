@@ -33,7 +33,7 @@ export class ReelSpinner {
     private init(): void{
         this._currentTopSymbolIndex = 0;
 
-        this._loopSpinDuration = 2000;
+        this._loopSpinDuration = 1000;
         this._spinLoopSpeed = 0.2;
 
         this.updateReel();
@@ -43,7 +43,7 @@ export class ReelSpinner {
         this._hasSymbolToStopAt = false;
 
         let tween = new TWEEN.Tween(this)
-            .to({ _currentTopSymbolIndex: "-16" }, 2000)
+            .to({ _currentTopSymbolIndex: "-16" }, 1000)
             .easing(TWEEN.Easing.Exponential.In)
             .onUpdate(() => {
                 this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
@@ -63,7 +63,7 @@ export class ReelSpinner {
         this.updateReel();
 
         let tween = new TWEEN.Tween(this)
-            .to({ _currentTopSymbolIndex: "-6" }, 2000)
+            .to({ _currentTopSymbolIndex: "-6" }, 1000)
             .easing(TWEEN.Easing.Back.Out)
             .onUpdate(() => {
                 this._currentTopSymbolIndex = this.calculateNormalizedIndex(this._currentTopSymbolIndex);
